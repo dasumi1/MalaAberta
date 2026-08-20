@@ -254,24 +254,95 @@ $$\text{Custo Saída} = (\text{tokens\_out} / 1.000.000) \times 7{,}50$$
 
 $$\text{Custo Total} = \text{Custo Entrada} + \text{Custo Saída}$$
 
-### Log de registro das chamadas
+### Exemplos de Chamadas cURL para Coleta de Evidências
 
-| ID | Objetivo | Técnica | Tokens entrada | Tokens saída | Custo entrada (USD) | Custo saída (USD) | Custo total (USD) |
+Os três testes abaixo foram executados via terminal cURL contra a API do Google Gemini (`gemini-3.6-flash`), utilizando o System Prompt e schema idênticos aos implementados no backend do app:
+
+#### Exemplo 1: Curitiba (3 dias, Trabalho, Frio)
+```bash
+curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=$GEMINI_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  -d '{
+    "systemInstruction": {
+      "parts": [{ "text": "Voce e um especialista em organizacao de viagens e montagem inteligente de bagagem. Responda SEMPRE e SOMENTE com JSON valido contendo: resumo (string de ate 2 frases), categorias (array de objetos com nome e itens, onde cada item possui item e quantidade) e lembretes (array de strings de dicas pontuais)." }]
+    },
+    "contents": [
+      {
+        "role": "user",
+        "parts": [{ "text": "Destino: Curitiba. Dias: 3. Motivo: Trabalho. Clima: Frio." }]
+      }
+    ],
+    "generationConfig": {
+      "responseMimeType": "application/json",
+      "temperature": 0.2
+    }
+  }'
+```
+
+#### Exemplo 2: Salvador (7 dias, Lazer, Calor)
+```bash
+curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=$GEMINI_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  -d '{
+    "systemInstruction": {
+      "parts": [{ "text": "Voce e um especialista em organizacao de viagens e montagem inteligente de bagagem. Responda SEMPRE e SOMENTE com JSON valido contendo: resumo (string de ate 2 frases), categorias (array de objetos com nome e itens, onde cada item possui item e quantidade) e lembretes (array de strings de dicas pontuais)." }]
+    },
+    "contents": [
+      {
+        "role": "user",
+        "parts": [{ "text": "Destino: Salvador. Dias: 7. Motivo: Lazer. Clima: Calor." }]
+      }
+    ],
+    "generationConfig": {
+      "responseMimeType": "application/json",
+      "temperature": 0.2
+    }
+  }'
+```
+
+#### Exemplo 3: Bariloche (10 dias, Ecoturismo e Aventura, Frio intenso)
+```bash
+curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=$GEMINI_API_KEY" \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  -d '{
+    "systemInstruction": {
+      "parts": [{ "text": "Voce e um especialista em organizacao de viagens e montagem inteligente de bagagem. Responda SEMPRE e SOMENTE com JSON valido contendo: resumo (string de ate 2 frases), categorias (array de objetos com nome e itens, onde cada item possui item e quantidade) e lembretes (array de strings de dicas pontuais)." }]
+    },
+    "contents": [
+      {
+        "role": "user",
+        "parts": [{ "text": "Destino: Bariloche. Dias: 10. Motivo: Ecoturismo e Aventura. Clima: Frio intenso com neve." }]
+      }
+    ],
+    "generationConfig": {
+      "responseMimeType": "application/json",
+      "temperature": 0.2
+    }
+  }'
+```
+
+### Log e Tabela de Chamadas Realizadas
+
+| ID | Cenário / Entrada | Técnica | Tokens entrada | Tokens saída | Custo entrada (USD) | Custo saída (USD) | Custo total (USD) |
 |:---:|---|---|:---:|:---:|:---:|:---:|:---:|
-| 01 | Primeira geração de lista no app | Few-shot + JSON | 46 | 182 | US$ 0,0000690 | US$ 0,0013650 | **US$ 0,0014340** |
-| 02 | Teste A — Contexto completo | Contexto sem filtro | 469 | 208 | US$ 0,0007035 | US$ 0,0015600 | **US$ 0,0022635** |
-| 03 | Teste B — Contexto curado | Curadoria de contexto | 99 | 140 | US$ 0,0001485 | US$ 0,0010500 | **US$ 0,0011985** |
-| 04 | Demonstração do MODO_JSON | Saída estruturada | 112 | 154 | US$ 0,0001680 | US$ 0,0011550 | **US$ 0,0013230** |
+| 01 | Curitiba, 3 dias, Trabalho, Frio | Few-shot + JSON (cURL) | 95 | 757 | US$ 0,0001425 | US$ 0,0056775 | **US$ 0,0058200** |
+| 02 | Salvador, 7 dias, Lazer, Calor | Few-shot + JSON (cURL) | 94 | 799 | US$ 0,0001410 | US$ 0,0059925 | **US$ 0,0061335** |
+| 03 | Bariloche, 10 dias, Ecoturismo, Frio | Few-shot + JSON (cURL) | 106 | 947 | US$ 0,0001590 | US$ 0,0071025 | **US$ 0,0072615** |
+| 04 | Teste A — Contexto completo (arquivo integral) | Contexto sem filtro | 469 | 208 | US$ 0,0007035 | US$ 0,0015600 | **US$ 0,0022635** |
+| 05 | Teste B — Contexto curado (trecho relevante) | Curadoria de contexto | 99 | 140 | US$ 0,0001485 | US$ 0,0010500 | **US$ 0,0011985** |
 
-**Custo total da sessão: US$ 0,0062190**
+**Custo total da sessão: US$ 0,0226770**
 
-> O custo real da utilização foi R$ 0 devido ao *free tier*. Os valores apresentados são custos hipotéticos calculados utilizando os preços oficiais da modalidade paga do modelo.
+> O custo real da utilização foi R$ 0 devido ao *free tier*. Os valores apresentados são custos calculados utilizando os preços oficiais da modalidade paga do modelo `gemini-3.6-flash`.
 
 ---
 
 ## 6. Evidências
 
-As evidências fotográficas e registros de terminal estão organizados na documentação e incluem:
+As evidências fotográficas e registros de terminal das chamadas realizadas:
 
 1. **System Prompt de Desenvolvimento** em uso na ferramenta e documentado.
 
@@ -299,7 +370,17 @@ As evidências fotográficas e registros de terminal estão organizados na docum
    <img width="745" height="449" alt="Terminal cURL Teste B - parte 1" src="https://github.com/user-attachments/assets/f5fc94cb-d2a9-40aa-8af6-889778aa67ab" />
    <img width="907" height="585" alt="Terminal cURL Teste B - parte 2" src="https://github.com/user-attachments/assets/7a19c51e-95d5-43e1-8d14-dd9c97a5c97f" />
 
-7. `04-modo-json.png`: resposta ao comando `MODO_JSON` em JSON puro estrito.
+7. **Terminal cURL do Exemplo 1 (Curitiba - 3 dias, Trabalho, Frio)**:
+   - Registro comprovado: **95 tokens de entrada** e **757 tokens de saída** (`modelVersion: gemini-3.6-flash`, responseId: `5myHaueqD8mFz7IP2PXCwA8`).
+   - ![Terminal cURL Exemplo 1 - Curitiba](Captura%20de%20tela%202026-08-20%20180943.png)
+
+8. **Terminal cURL do Exemplo 2 (Salvador - 7 dias, Lazer, Calor)**:
+   - Registro comprovado: **94 tokens de entrada** e **799 tokens de saída** (`modelVersion: gemini-3.6-flash`, responseId: `JG2HaoOeG9aEz7IPq5jrkQY`).
+   - ![Terminal cURL Exemplo 2 - Salvador](Captura%20de%20tela%202026-08-20%20181110.png)
+
+9. **Terminal cURL do Exemplo 3 (Bariloche - 10 dias, Ecoturismo, Frio intenso)**:
+   - Registro comprovado: **106 tokens de entrada** e **947 tokens de saída** (`modelVersion: gemini-3.6-flash`, responseId: `em2Hau6JEZ3Uz7IPlZvO6Ao`).
+   - ![Terminal cURL Exemplo 3 - Bariloche](Captura%20de%20tela%202026-08-20%20181200.png)
 
 ---
 
