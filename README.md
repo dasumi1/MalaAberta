@@ -261,7 +261,7 @@ $$\text{Custo Total} = \text{Custo Entrada} + \text{Custo Saída}$$
 | 01 | Teste A — Contexto completo (arquivo integral) | Contexto sem filtro | 469 | 208 | US$ 0,0007035 | US$ 0,0015600 | **US$ 0,0022635** |
 | 02 | Teste B — Contexto curado (trecho relevante) | Curadoria de contexto | 99 | 140 | US$ 0,0001485 | US$ 0,0010500 | **US$ 0,0011985** |
 
-**Custo total da sessão: US$ 0,0226770**
+**Custo total da sessão: US$ 0,003462**
 
 > O custo real da utilização foi R$ 0 devido ao *free tier*. Os valores apresentados são custos calculados utilizando os preços oficiais da modalidade paga do modelo `gemini-3.6-flash`.
 
