@@ -227,28 +227,24 @@ $$\text{Custo Total} = \text{Custo Entrada} + \text{Custo Saída}$$
 
 As evidências fotográficas e registros de terminal das chamadas realizadas:
 
-1. **System Prompt de Desenvolvimento** em uso na ferramenta e documentado.
-
-   <img width="1920" height="1020" alt="System Prompt de Desenvolvimento" src="https://github.com/user-attachments/assets/026449c3-6622-4388-8371-14c097b0cfd5" />
-
-2. **Trecho de `api/prompts.js`** contendo a constante `SYSTEM_PROMPT`.
+1. **Trecho de `api/prompts.js`** contendo a constante `SYSTEM_PROMPT`.
 
    <img width="1558" height="834" alt="Constante SYSTEM_PROMPT" src="https://github.com/user-attachments/assets/e0106f69-c3c2-465f-bc5c-05b04b2f249d" />
 
-3. **Constante `FEW_SHOT`** com os pares de exemplos user/assistant estruturados.
+2. **Constante `FEW_SHOT`** com os pares de exemplos user/assistant estruturados.
 
    <img width="1534" height="826" alt="Constante FEW_SHOT" src="https://github.com/user-attachments/assets/720748bd-3628-4a8c-9f39-75bd5b903fb4" />
 
-4. **Lista de bagagem gerada na interface**, comprovando a adoção do padrão de poucas peças e categorias.
+3. **Lista de bagagem gerada na interface**, comprovando a adoção do padrão de poucas peças e categorias.
 
    <img width="1188" height="723" alt="Lista de bagagem gerada" src="https://github.com/user-attachments/assets/edd7bb6f-8c8d-49f2-abe4-33e0af2a799c" />
 
-5. **Terminal cURL do Teste A** (contexto completo), registrando 469 tokens de entrada e 208 de saída.
+4. **Terminal cURL do Teste A** (contexto completo), registrando 469 tokens de entrada e 208 de saída.
 
    <img width="745" height="449" alt="Terminal cURL Teste A - parte 1" src="https://github.com/user-attachments/assets/6f4e8bf8-c72e-44d7-8d35-60d837b63f76" />
    <img width="907" height="585" alt="Terminal cURL Teste A - parte 2" src="https://github.com/user-attachments/assets/190d3a24-993a-4b2b-a55e-9416b36bae97" />
 
-6. **Terminal cURL do Teste B** (contexto curado), registrando 99 tokens de entrada e 140 de saída.
+5. **Terminal cURL do Teste B** (contexto curado), registrando 99 tokens de entrada e 140 de saída.
 
    <img width="745" height="449" alt="Terminal cURL Teste B - parte 1" src="https://github.com/user-attachments/assets/f5fc94cb-d2a9-40aa-8af6-889778aa67ab" />
    <img width="907" height="585" alt="Terminal cURL Teste B - parte 2" src="https://github.com/user-attachments/assets/7a19c51e-95d5-43e1-8d14-dd9c97a5c97f" />
