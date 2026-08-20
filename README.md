@@ -265,6 +265,8 @@ $$\text{Custo Total} = \text{Custo Entrada} + \text{Custo Saída}$$
 
 > O custo real da utilização foi R$ 0 devido ao *free tier*. Os valores apresentados são custos calculados utilizando os preços oficiais da modalidade paga do modelo `gemini-3.6-flash`.
 
+<img width="843" height="533" alt="Screenshot_1" src="https://github.com/user-attachments/assets/8e03169b-c00a-440b-b3c2-ee6612a47784" />
+
 ---
 
 ## 6. Evidências
