@@ -304,42 +304,12 @@ As evidências fotográficas e registros de terminal estão organizados na docum
 
 ---
 
-## 7. Deploy e Execução Local
+## 7. Deploy
 
-- **URL pública do projeto**: `https://ais-dev-johptaxmyu2vnahec5ndkq-436212701844.us-east1.run.app`
-- **Plataforma utilizada**: Google Cloud Run / Google AI Studio Build
+- **URL pública do projeto (Vercel)**: [https://mala-aberta.vercel.app/](https://mala-aberta.vercel.app/)
+- **Ambiente de visualização**: [https://ais-dev-johptaxmyu2vnahec5ndkq-436212701844.us-east1.run.app](https://ais-dev-johptaxmyu2vnahec5ndkq-436212701844.us-east1.run.app)
+- **Plataformas utilizadas**: Vercel / Google AI Studio Build / Google Cloud Run
 - **Colaborador adicionado no GitHub**: `@pedrosatin`
-
-### Instruções para execução local
-
-1. Clone o repositório do projeto:
-
-   ```bash
-   git clone <URL_DO_REPOSITORIO>
-   cd montador-de-mala
-   ```
-
-2. Instale as dependências:
-
-   ```bash
-   npm install
-   ```
-
-3. Configure a variável de ambiente criando um arquivo `.env` (baseado no `.env.example`):
-
-   ```env
-   GEMINI_API_KEY=sua_chave_aqui
-   ```
-
-4. Inicie o servidor local:
-
-   ```bash
-   npm run dev
-   # ou
-   node server.ts
-   ```
-
-5. Acesse a aplicação no navegador em `http://localhost:3000`.
 
 ---
 

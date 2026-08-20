@@ -54,7 +54,7 @@ function apiPlugin(): Plugin {
 
 export default defineConfig(() => {
   return {
-    base: process.env.VITE_BASE_PATH || '/',
+    base: './',
     plugins: [apiPlugin()],
     resolve: {
       alias: {
