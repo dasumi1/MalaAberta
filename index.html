@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Montador de mala</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;800&family=Karla:wght@400;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topo">
+ <p class="eyebrow">Despacho de bagagem</p>
+ <h1>Montador<br>de mala</h1>
+ <p class="sub">Diz para onde vai e como vai ser. A lista sai pronta.</p>
+</header>
+<main>
+ <section class="ficha" aria-label="Dados da viagem">
+ <div class="campo">
+ <label for="destino">Destino</label>
+ <input id="destino" type="text" placeholder="Fortaleza, CE" autocomplete="off">
+ </div>
+ <div class="linha-dupla">
+ <div class="campo">
+ <label for="dias">Dias</label>
+ <input id="dias" type="number" min="1" max="60" value="5">
+ </div>
+ <div class="campo">
+ <label for="clima">Clima</label>
+ <select id="clima">
+ <option>quente</option>
+ <option>ameno</option>
+ <option>frio</option>
+ <option>chuvoso</option>
+ </select>
+ </div>
+ </div>
+ <div class="campo">
+ <label for="motivo">Motivo</label>
+ <select id="motivo">
+ <option>lazer</option>
+ <option>trabalho</option>
+ <option>estudo</option>
+ <option>visita a familia</option>
+ <option>aventura ao ar livre</option>
+ </select>
+ </div>
+ <button id="gerar">Montar a mala</button>
+ <p class="aviso" id="aviso" role="status"></p>
+ </section>
+ <section id="resultado" class="etiqueta" hidden>
+ <div class="furo" aria-hidden="true"></div>
+ <div class="carimbo" id="carimbo"></div>
+ <p class="resumo" id="resumo"></p>
+ <div id="categorias"></div>
+ <div class="perfuracao" aria-hidden="true"></div>
+ <ul class="lembretes" id="lembretes"></ul>
+ </section>
+ <section id="medicao" class="medicao" hidden>
+ <h2>Medição desta chamada</h2>
+ <dl>
+ <div><dt>Modelo</dt><dd id="m-modelo"></dd></div>
+ <div><dt>Tokens de entrada</dt><dd id="m-entrada"></dd></div>
+ <div><dt>Tokens de saída</dt><dd id="m-saida"></dd></div>
+ <div><dt>Custo de entrada</dt><dd id="m-custo-entrada"></dd></div>
+ <div><dt>Custo de saída</dt><dd id="m-custo-saida"></dd></div>
+ <div class="total"><dt>Custo da chamada</dt><dd id="m-custo-total"></dd></div>
+ <div class="total"><dt>Custo da sessão</dt><dd id="m-sessao"></dd></div>
+ </dl>
+ <p class="nota">Tokens vindos do campo <code>usageMetadata</code> da resposta da API Gemini. Preços oficiais do Gemini 3.7 Flash: 
+ US$ 0,10 por milhão de entrada e US$ 0,40 por milhão de saída.</p>
+ </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

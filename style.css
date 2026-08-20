@@ -1,0 +1,183 @@
+:root {
+ --tinta: #17222b;
+ --papel: #e4e6e3;
+ --cartao: #f6f6f4;
+ --carimbo: #5a3fa0;
+ --linha: #c2c6c1;
+ --suave: #5d6a70;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+ background: var(--papel);
+ color: var(--tinta);
+ font-family: 'Karla', system-ui, sans-serif;
+ line-height: 1.5;
+ padding: 32px 20px 64px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+main, .topo { width: 100%; max-width: 560px; }
+/* ---------- topo ---------- */
+.eyebrow {
+ font-family: 'DM Mono', monospace;
+ font-size: 11px;
+ letter-spacing: 0.18em;
+ text-transform: uppercase;
+ color: var(--carimbo);
+ margin-bottom: 12px;
+}
+h1 {
+ font-family: 'Archivo', sans-serif;
+ font-weight: 800;
+ font-size: clamp(44px, 13vw, 68px);
+ line-height: 0.92;
+ letter-spacing: -0.03em;
+ text-transform: uppercase;
+}
+.sub { color: var(--suave); margin: 14px 0 32px; max-width: 34ch; }
+/* ---------- ficha ---------- */
+.ficha {
+ background: var(--cartao);
+ border: 1px solid var(--linha);
+ padding: 22px;
+}
+.campo { margin-bottom: 16px; }
+.linha-dupla { display: grid; grid-template-columns: 1fr 1.4fr; gap: 12px; }
+label {
+ display: block;
+ font-family: 'DM Mono', monospace;
+ font-size: 10px;
+ letter-spacing: 0.16em;
+ text-transform: uppercase;
+ color: var(--suave);
+ margin-bottom: 6px;
+}
+input, select {
+ width: 100%;
+ padding: 11px 12px;
+ font-family: 'Karla', sans-serif;
+ font-size: 16px;
+ color: var(--tinta);
+ background: #fff;
+ border: 1px solid var(--linha);
+ border-radius: 0;
+}
+input:focus-visible, select:focus-visible, button:focus-visible {
+ outline: 2px solid var(--carimbo);
+ outline-offset: 2px;
+}
+button {
+ width: 100%;
+ margin-top: 6px;
+ padding: 14px;
+ font-family: 'Archivo', sans-serif;
+ font-weight: 800;
+ font-size: 14px;
+ letter-spacing: 0.1em;
+ text-transform: uppercase;
+ color: var(--cartao);
+ background: var(--tinta);
+ border: none;
+ cursor: pointer;
+}
+button:hover { background: var(--carimbo); }
+button:disabled { background: var(--suave); cursor: wait; }
+.aviso {
+ min-height: 20px;
+ margin-top: 10px;
+ font-size: 14px;
+ color: var(--carimbo);
+}
+/* ---------- etiqueta de bagagem ---------- */
+.etiqueta {
+ position: relative;
+ margin-top: 28px;
+ padding: 40px 24px 24px;
+ background: var(--cartao);
+ border: 1px solid var(--tinta);
+ animation: chegou 0.4s ease-out;
+}
+@keyframes chegou {
+ from { opacity: 0; transform: translateY(10px) rotate(-0.6deg); }
+ to { opacity: 1; transform: none; }
+}
+.furo {
+ position: absolute;
+ top: 14px;
+ left: 24px;
+ width: 16px;
+ height: 16px;
+ border: 1px solid var(--tinta);
+ border-radius: 50%;
+ background: var(--papel);
+}
+.carimbo {
+ position: absolute;
+ top: 12px;
+ right: 18px;
+ transform: rotate(-6deg);
+ padding: 5px 10px;
+ border: 2px solid var(--carimbo);
+ color: var(--carimbo);
+ font-family: 'DM Mono', monospace;
+ font-size: 11px;
+ letter-spacing: 0.1em;
+ text-transform: uppercase;
+}
+.resumo { margin: 12px 0 24px; font-size: 17px; }
+.categoria { margin-bottom: 22px; }
+.categoria h3 {
+ font-family: 'DM Mono', monospace;
+ font-size: 11px;
+ font-weight: 500;
+ letter-spacing: 0.16em;
+ text-transform: uppercase;
+ color: var(--carimbo);
+ padding-bottom: 6px;
+ border-bottom: 1px solid var(--linha);
+ margin-bottom: 10px;
+}
+.categoria li {
+ display: flex;
+ justify-content: space-between;
+ gap: 16px;
+ list-style: none;
+ padding: 5px 0;
+}
+.categoria .qtd { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--suave); }
+.perfuracao { border-top: 2px dashed var(--linha); margin: 4px 0 18px; }
+.lembretes { list-style: none; }
+.lembretes li {
+ font-size: 15px;
+ color: var(--suave);
+ padding-left: 18px;
+ position: relative;
+ margin-bottom: 6px;
+}
+.lembretes li::before { content: '→'; position: absolute; left: 0; color: var(--carimbo); }
+/* ---------- painel de medição ---------- */
+.medicao { margin-top: 28px; border-top: 1px solid var(--linha); padding-top: 20px; }
+.medicao h2 {
+ font-family: 'DM Mono', monospace;
+ font-size: 11px;
+ font-weight: 500;
+ letter-spacing: 0.16em;
+ text-transform: uppercase;
+ color: var(--suave);
+ margin-bottom: 12px;
+}
+.medicao dl > div {
+ display: flex;
+ justify-content: space-between;
+ padding: 6px 0;
+ border-bottom: 1px solid var(--linha);
+}
+.medicao dt { font-size: 14px; color: var(--suave); }
+.medicao dd { font-family: 'DM Mono', monospace; font-size: 14px; }
+.medicao .total dd { color: var(--carimbo); font-weight: 500; }
+.nota { margin-top: 12px; font-size: 12px; color: var(--suave); }
+.nota code { font-family: 'DM Mono', monospace; }
+@media (prefers-reduced-motion: reduce) {
+ .etiqueta { animation: none; }
+}

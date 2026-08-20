@@ -1,0 +1,6 @@
+{
+  "name": "Montador de mala",
+  "description": "Sistema de montador de mala de viagem com base no destino, dias, motivo e clima.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
