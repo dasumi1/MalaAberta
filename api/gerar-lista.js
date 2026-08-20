@@ -118,16 +118,18 @@ export default async function handler(req, res) {
     const texto = response.text || '{}';
     const lista = JSON.parse(texto);
 
-    // Tokens reais registrados na chamada
-    const tokensEntrada = response.usageMetadata?.promptTokenCount || 0;
-    const tokensSaida = response.usageMetadata?.candidatesTokenCount || 0;
+    // Extração segura de tokens reais registrados na chamada
+    const usage = response.usageMetadata || {};
+    const tokensEntrada = Number(usage.promptTokenCount || 0);
+    const tokensSaida = Number(usage.candidatesTokenCount || 0);
 
     return res.status(200).json({
       lista,
       modelo: modeloUsado,
       uso: {
         tokens_entrada: tokensEntrada,
-        tokens_saida: tokensSaida
+        tokens_saida: tokensSaida,
+        tokens_total: tokensEntrada + tokensSaida
       }
     });
   } catch (erro) {

@@ -1,3 +1,5 @@
+import './style.css';
+
 // Precos oficiais do Gemini 3.7 Flash, em dolares por milhao de tokens.
 const PRECO_ENTRADA = 0.10;
 const PRECO_SAIDA = 0.40;
@@ -91,14 +93,18 @@ function mostrarLista(lista, viagem) {
 }
 
 function mostrarMedicao(uso, modelo) {
- const custoEntrada = (uso.tokens_entrada / 1000000) * PRECO_ENTRADA;
- const custoSaida = (uso.tokens_saida / 1000000) * PRECO_SAIDA;
+ if (!uso) return;
+ const tokensEntrada = Number(uso.tokens_entrada || 0);
+ const tokensSaida = Number(uso.tokens_saida || 0);
+
+ const custoEntrada = (tokensEntrada / 1000000) * PRECO_ENTRADA;
+ const custoSaida = (tokensSaida / 1000000) * PRECO_SAIDA;
  const custoDaChamada = custoEntrada + custoSaida;
  custoDaSessao += custoDaChamada;
 
- document.getElementById('m-modelo').textContent = modelo;
- document.getElementById('m-entrada').textContent = uso.tokens_entrada;
- document.getElementById('m-saida').textContent = uso.tokens_saida;
+ document.getElementById('m-modelo').textContent = modelo || 'gemini-3.6-flash';
+ document.getElementById('m-entrada').textContent = tokensEntrada;
+ document.getElementById('m-saida').textContent = tokensSaida;
  document.getElementById('m-custo-entrada').textContent = emDolar(custoEntrada);
  document.getElementById('m-custo-saida').textContent = emDolar(custoSaida);
  document.getElementById('m-custo-total').textContent = emDolar(custoDaChamada);
