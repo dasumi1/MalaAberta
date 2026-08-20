@@ -1,21 +1,36 @@
 # Montador de Mala Inteligente
 
-Aplicação web e protótipo prático de Engenharia de Prompt e Contexto na Prática, demonstrando aplicação intencional de *Few-Shot Prompting*, extração de *Structured Outputs (JSON)*, auditoria de tokens e experimento comparativo de curadoria de contexto.
+Aplicação web e protótipo prático de **Engenharia de Prompt e Contexto na Prática**, demonstrando aplicação intencional de *Few-Shot Prompting*, extração de *Structured Outputs (JSON)*, auditoria de tokens e experimento comparativo de curadoria de contexto.
+
+---
+
+## Sumário
+
+1. [Sobre o projeto](#1-sobre-o-projeto)
+2. [System Prompt](#2-system-prompt)
+3. [Técnica de Prompt Engineering](#3-técnica-de-prompt-engineering)
+4. [Teste de Curadoria de Contexto](#4-teste-de-curadoria-de-contexto)
+5. [Chamadas e Custos](#5-chamadas-e-custos)
+6. [Evidências](#6-evidências)
+7. [Deploy e Execução Local](#7-deploy-e-execução-local)
+8. [Integrantes](#8-integrantes)
 
 ---
 
 ## 1. Sobre o projeto
 
-- **O que o projeto faz**: Gera listas de bagagem personalizadas, inteligentes e enxutas para viajantes, considerando quatro variáveis essenciais: destino, duração em dias, motivo da viagem (lazer, trabalho, estudos, aventura) e condições climáticas previstas (frio, calor, chuva, ameno).
-- **Problema resolvido**: Elimina o estresse de esquecer itens essenciais e previne o excesso de bagagem (evitando taxas de despacho e sobrepeso), adequando quantidades de peças ao número exato de dias e sugerindo itens indispensáveis de acordo com o contexto climático e funcional do destino.
-- **Público-alvo**: Viajantes frequentes, turistas a lazer, profissionais em viagens corporativas a trabalho e mochileiros/aventureiros.
-- **Opção do trabalho escolhida**: Desenvolvimento de Protótipo com Engenharia de Prompt, Contexto Curado e Telemetria de Custos (Opção prática com consumo de API de LLM).
+| | |
+|---|---|
+| **O que o projeto faz** | Gera listas de bagagem personalizadas, inteligentes e enxutas para viajantes, considerando quatro variáveis essenciais: destino, duração em dias, motivo da viagem (lazer, trabalho, estudos, aventura) e condições climáticas previstas (frio, calor, chuva, ameno). |
+| **Problema resolvido** | Elimina o estresse de esquecer itens essenciais e previne o excesso de bagagem (evitando taxas de despacho e sobrepeso), adequando quantidades de peças ao número exato de dias e sugerindo itens indispensáveis de acordo com o contexto climático e funcional do destino. |
+| **Público-alvo** | Viajantes frequentes, turistas a lazer, profissionais em viagens corporativas a trabalho e mochileiros/aventureiros. |
+| **Opção do trabalho escolhida** | Desenvolvimento de Protótipo com Engenharia de Prompt, Contexto Curado e Telemetria de Custos (opção prática com consumo de API de LLM). |
 
 ---
 
 ## 2. System Prompt
 
-Para atender integralmente aos requisitos do projeto, documentamos os dois system prompts utilizados: o **System Prompt de Desenvolvimento** (usado durante a construção do código) e o **System Prompt da Aplicação** (enviado à API em tempo de execução para gerar a mala).
+Para atender integralmente aos requisitos do projeto, documentamos os dois *system prompts* utilizados: o **System Prompt de Desenvolvimento** (usado durante a construção do código) e o **System Prompt da Aplicação** (enviado à API em tempo de execução para gerar a mala).
 
 ### 2.1. System Prompt da Aplicação (`api/prompts.js`)
 
@@ -113,13 +128,16 @@ REGRAS GERAIS:
 
 ## 3. Técnica de Prompt Engineering
 
-### Técnica Escolhida: Few-Shot Prompting
+### Técnica escolhida: Few-Shot Prompting
+
 A técnica principal empregada no projeto é o **Few-Shot Prompting** (aprendizado por poucos exemplos), combinada com **Role Conditioning** e **Structured Output Enforcement (JSON Schema)**.
 
-### Como foi aplicada:
+### Como foi aplicada
+
 No módulo `api/prompts.js`, foram fornecidos pares completos de exemplos de entrada e saída no array `FEW_SHOT`:
-1. **Exemplo 1 (Viagem a lazer de 3 dias no frio em Gramado, RS)**: Demonstra como calcular poucas peças sobreponíveis em camadas, itens de hidratação labial para frio e lembrete de oscilação térmica da serra.
-2. **Exemplo 2 (Viagem corporativa de 2 dias em São Paulo, SP)**: Demonstra como focar em roupas sociais compactas, mochila de notebook, carregadores e avisos pontuais de mobilidade urbana e garoa.
+
+1. **Exemplo 1 — Viagem a lazer de 3 dias no frio em Gramado, RS**: demonstra como calcular poucas peças sobreponíveis em camadas, itens de hidratação labial para frio e lembrete de oscilação térmica da serra.
+2. **Exemplo 2 — Viagem corporativa de 2 dias em São Paulo, SP**: demonstra como focar em roupas sociais compactas, mochila de notebook, carregadores e avisos pontuais de mobilidade urbana e garoa.
 
 ```javascript
 // Trecho de api/prompts.js
@@ -167,128 +185,168 @@ export const FEW_SHOT = [
 ];
 ```
 
-### Por que ela é adequada ao projeto:
-- **Formatação de Unidades Semânticas**: Sem gastar centenas de tokens descrevendo regras gramaticais em texto, o modelo aprende instantaneamente a gerar quantidades acompanhadas de unidades contextuais (`"4 pares"`, `"1 kit"`, `"2 un"`).
-- **Proporcionalidade da Bagagem**: Ancorou a proporcionalidade de itens por quantidade de dias e o tom conciso e profissional dos resumos e lembretes.
-- **Determinismo na Renderização**: Garante que o retorno seja 100% aderente ao formato JSON consumido pela interface web, sem falhas de parse.
+### Por que ela é adequada ao projeto
+
+- **Formatação de unidades semânticas**: sem gastar centenas de tokens descrevendo regras gramaticais em texto, o modelo aprende instantaneamente a gerar quantidades acompanhadas de unidades contextuais (`"4 pares"`, `"1 kit"`, `"2 un"`).
+- **Proporcionalidade da bagagem**: ancorou a proporcionalidade de itens por quantidade de dias e o tom conciso e profissional dos resumos e lembretes.
+- **Determinismo na renderização**: garante que o retorno seja 100% aderente ao formato JSON consumido pela interface web, sem falhas de parse.
 
 ---
 
 ## 4. Teste de Curadoria de Contexto
 
-Para demonstrar empiricamente a importância do envio de contexto curado em comparação com contexto poluído/excessivo (equivalente a `@file` total vs `@selection`), foi realizado um experimento controlado executando a **mesma pergunta técnica de desenvolvimento**:
+Para demonstrar empiricamente a importância do envio de contexto curado em comparação com contexto poluído/excessivo (equivalente a `@file` total vs. `@selection`), foi realizado um experimento controlado executando a **mesma pergunta técnica de desenvolvimento**:
 
-> **Pergunta Formulada**: *"Quais são os campos obrigatórios esperados no corpo da requisição POST (req.body)?"*
+> **Pergunta formulada**: "Quais são os campos obrigatórios esperados no corpo da requisição POST (`req.body`)?"
 
-### Teste A — Contexto Completo (Sem Curadoria)
-- **Prompt Utilizado**: Envio do arquivo de backend `api/gerar-lista.js` integralmente colado dentro do prompt (contendo imports da SDK, conexão GoogleGenAI, headers, rotas, lógica de sleep, retentativas exponenciais com loop de fallback de modelos e formatação de resposta).
-- **Contexto Fornecido**: 35 linhas de código completo do arquivo backend.
-- **Tokens de Entrada (`promptTokenCount`)**: **469**
-- **Tokens de Saída (`candidatesTokenCount`)**: **208**
-- **Evidência**: Captura do terminal Git Bash (`MINGW64`) com cURL e objeto `usageMetadata` com `promptTokenCount: 469` e `candidatesTokenCount: 208`.
+### Teste A — Contexto completo (sem curadoria)
 
-### Teste B — Contexto Curado (Apenas Trecho Relevante)
-- **Mesmo Prompt Utilizado**: *"Com base apenas no trecho de validação do handler abaixo, quais são os campos obrigatórios que o frontend precisa enviar no POST?"*
-- **Trecho Relevante Fornecido**:
+- **Prompt utilizado**: envio do arquivo de backend `api/gerar-lista.js` integralmente colado dentro do prompt (contendo imports da SDK, conexão `GoogleGenAI`, headers, rotas, lógica de *sleep*, retentativas exponenciais com loop de fallback de modelos e formatação de resposta).
+- **Contexto fornecido**: 35 linhas de código completo do arquivo backend.
+- **Tokens de entrada** (`promptTokenCount`): **469**
+- **Tokens de saída** (`candidatesTokenCount`): **208**
+- **Evidência**: captura do terminal Git Bash (`MINGW64`) com cURL e objeto `usageMetadata` com `promptTokenCount: 469` e `candidatesTokenCount: 208`.
+
+### Teste B — Contexto curado (apenas trecho relevante)
+
+- **Prompt utilizado**: "Com base apenas no trecho de validação do handler abaixo, quais são os campos obrigatórios que o frontend precisa enviar no POST?"
+- **Trecho relevante fornecido**:
+
   ```javascript
   const { destino, dias, motivo, clima } = req.body || {};
   if (!destino || !dias || !motivo || !clima) {
     return res.status(400).json({ erro: 'Preencha destino, dias, motivo e clima.' });
   }
   ```
-- **Tokens de Entrada (`promptTokenCount`)**: **99**
-- **Tokens de Saída (`candidatesTokenCount`)**: **140**
-- **Evidência**: Captura do terminal Git Bash (`MINGW64`) com cURL e objeto `usageMetadata` com `promptTokenCount: 99` e `candidatesTokenCount: 140`.
 
-### Comparação e Impacto da Curadoria de Contexto:
+- **Tokens de entrada** (`promptTokenCount`): **99**
+- **Tokens de saída** (`candidatesTokenCount`): **140**
+- **Evidência**: captura do terminal Git Bash (`MINGW64`) com cURL e objeto `usageMetadata` com `promptTokenCount: 99` e `candidatesTokenCount: 140`.
 
-| Métrica | Teste A (Contexto Completo) | Teste B (Contexto Curado) | Variação / Economia |
-| :--- | :---: | :---: | :---: |
-| **Tokens de Entrada** | 469 tokens | 99 tokens | **-78,89% de economia** |
-| **Tokens de Saída** | 208 tokens | 140 tokens | -32,69% de saída (resposta mais concisa) |
-| **Tokens Totais** | 677 tokens | 239 tokens | **-64,70% de redução total** |
-| **Custo Estimado da Chamada** | US$ 0,0022635 | US$ 0,0011985 | **-47,05% no custo financeiro** |
+### Comparação e impacto da curadoria de contexto
 
-**Conclusão**: A curadoria de contexto reduziu os tokens de entrada em **quase 79%**, manteve a exatidão absoluta da resposta (identificando os campos `destino`, `dias`, `motivo` e `clima`), eliminou distrações de dependências e reduziu pela metade o custo computacional e financeiro da requisição.
+| Métrica | Teste A (contexto completo) | Teste B (contexto curado) | Variação / economia |
+|---|:---:|:---:|:---:|
+| Tokens de entrada | 469 | 99 | **-78,89%** |
+| Tokens de saída | 208 | 140 | -32,69% (resposta mais concisa) |
+| Tokens totais | 677 | 239 | **-64,70%** |
+| Custo estimado da chamada | US$ 0,0022635 | US$ 0,0011985 | **-47,05%** |
+
+**Conclusão**: a curadoria de contexto reduziu os tokens de entrada em quase 79%, manteve a exatidão absoluta da resposta (identificando os campos `destino`, `dias`, `motivo` e `clima`), eliminou distrações de dependências e reduziu praticamente pela metade o custo computacional e financeiro da requisição.
 
 ---
 
 ## 5. Chamadas e custos
 
-### Tabela de Preços de Referência Oficial
-- **Modelo Utilizado**: `gemini-3.6-flash`
-- **Preço de Entrada**: US$ 1,50 por 1 milhão de tokens (`US$ 0,00000150` / token)
-- **Preço de Saída**: US$ 7,50 por 1 milhão de tokens (`US$ 0,00000750` / token)
-- **Fonte Oficial**: Google AI Studio Pricing Table (Gemini 3.6 Flash)
+### Tabela de preços de referência oficial
 
-### Fórmulas Aplicadas:
-- $\text{Custo Entrada} = (\text{tokens\_in} / 1.000.000) \times 1{,}50$
-- $\text{Custo Saída} = (\text{tokens\_out} / 1.000.000) \times 7{,}50$
-- $\text{Custo Total da Chamada} = \text{Custo Entrada} + \text{Custo Saída}$
+| Item | Valor |
+|---|---|
+| Modelo utilizado | `gemini-3.6-flash` |
+| Preço de entrada | US$ 1,50 / 1M tokens (US$ 0,00000150 / token) |
+| Preço de saída | US$ 7,50 / 1M tokens (US$ 0,00000750 / token) |
+| Fonte oficial | Google AI Studio Pricing Table (Gemini 3.6 Flash) |
 
-### Log de Registro das Chamadas:
+### Fórmulas aplicadas
+
+$$\text{Custo Entrada} = (\text{tokens\_in} / 1.000.000) \times 1{,}50$$
+
+$$\text{Custo Saída} = (\text{tokens\_out} / 1.000.000) \times 7{,}50$$
+
+$$\text{Custo Total} = \text{Custo Entrada} + \text{Custo Saída}$$
+
+### Log de registro das chamadas
 
 | ID | Objetivo | Técnica | Tokens entrada | Tokens saída | Custo entrada (USD) | Custo saída (USD) | Custo total (USD) |
-| :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| **01** | Primeira geração de lista no app | Few-shot + JSON | 46 | 182 | US$ 0,0000690 | US$ 0,0013650 | **US$ 0,0014340** |
-| **02** | Teste A — Contexto completo | Contexto sem filtro | 469 | 208 | US$ 0,0007035 | US$ 0,0015600 | **US$ 0,0022635** |
-| **03** | Teste B — Contexto curado | Curadoria de contexto | 99 | 140 | US$ 0,0001485 | US$ 0,0010500 | **US$ 0,0011985** |
-| **04** | Demonstração do MODO_JSON | Saída estruturada | 112 | 154 | US$ 0,0001680 | US$ 0,0011550 | **US$ 0,0013230** |
+|:---:|---|---|:---:|:---:|:---:|:---:|:---:|
+| 01 | Primeira geração de lista no app | Few-shot + JSON | 46 | 182 | US$ 0,0000690 | US$ 0,0013650 | **US$ 0,0014340** |
+| 02 | Teste A — Contexto completo | Contexto sem filtro | 469 | 208 | US$ 0,0007035 | US$ 0,0015600 | **US$ 0,0022635** |
+| 03 | Teste B — Contexto curado | Curadoria de contexto | 99 | 140 | US$ 0,0001485 | US$ 0,0010500 | **US$ 0,0011985** |
+| 04 | Demonstração do MODO_JSON | Saída estruturada | 112 | 154 | US$ 0,0001680 | US$ 0,0011550 | **US$ 0,0013230** |
 
-**Custo total da sessão**: **US$ 0,0062190**
+**Custo total da sessão: US$ 0,0062190**
 
-> *O custo real da utilização foi R$0 devido ao free tier. Os valores apresentados são custos hipotéticos calculados utilizando os preços oficiais da modalidade paga do modelo.*
+> O custo real da utilização foi R$ 0 devido ao *free tier*. Os valores apresentados são custos hipotéticos calculados utilizando os preços oficiais da modalidade paga do modelo.
 
 ---
 
 ## 6. Evidências
 
 As evidências fotográficas e registros de terminal estão organizados na documentação e incluem:
-1. `prompt-system-desenvolvimento.png`: O System Prompt de Desenvolvimento em uso na ferramenta e documentado.
-2. `prompt-system-aplicacao.png`: Trecho de `api/prompts.js` contendo a constante `SYSTEM_PROMPT`.
-3. `fewshot-codigo.png`: A constante `FEW_SHOT` com os pares de exemplos user/assistant estruturados.
-4. `fewshot-resultado.png`: A lista de bagagem gerada na interface, comprovando a adoção do padrão de poucas peças e categorias.
-5. `01-painel-medicao.png`: Painel de medição da aplicação exibindo tokens de entrada, saída e o cálculo dinâmico.
-6. `02-teste-a-prompt.png` e `02-teste-a-tokens.png`: Terminal cURL do Teste A (contexto completo) registrando 469 tokens de entrada e 208 de saída.
-7. `03-teste-b-prompt.png` e `03-teste-b-tokens.png`: Terminal cURL do Teste B (contexto curado) registrando 99 tokens de entrada e 140 de saída.
-8. `04-modo-json.png`: Resposta ao comando `MODO_JSON` em JSON puro estrito.
-9. `deploy-url.png`: A aplicação aberta e operacional no navegador.
-10. `colaborador.png`: Inclusão do usuário `@pedrosatin` como colaborador no repositório GitHub.
+
+1. **System Prompt de Desenvolvimento** em uso na ferramenta e documentado.
+
+   <img width="1920" height="1020" alt="System Prompt de Desenvolvimento" src="https://github.com/user-attachments/assets/026449c3-6622-4388-8371-14c097b0cfd5" />
+
+2. **Trecho de `api/prompts.js`** contendo a constante `SYSTEM_PROMPT`.
+
+   <img width="1558" height="834" alt="Constante SYSTEM_PROMPT" src="https://github.com/user-attachments/assets/e0106f69-c3c2-465f-bc5c-05b04b2f249d" />
+
+3. **Constante `FEW_SHOT`** com os pares de exemplos user/assistant estruturados.
+
+   <img width="1534" height="826" alt="Constante FEW_SHOT" src="https://github.com/user-attachments/assets/720748bd-3628-4a8c-9f39-75bd5b903fb4" />
+
+4. **Lista de bagagem gerada na interface**, comprovando a adoção do padrão de poucas peças e categorias.
+
+   <img width="1188" height="723" alt="Lista de bagagem gerada" src="https://github.com/user-attachments/assets/edd7bb6f-8c8d-49f2-abe4-33e0af2a799c" />
+
+5. **Terminal cURL do Teste A** (contexto completo), registrando 469 tokens de entrada e 208 de saída.
+
+   <img width="745" height="449" alt="Terminal cURL Teste A - parte 1" src="https://github.com/user-attachments/assets/6f4e8bf8-c72e-44d7-8d35-60d837b63f76" />
+   <img width="907" height="585" alt="Terminal cURL Teste A - parte 2" src="https://github.com/user-attachments/assets/190d3a24-993a-4b2b-a55e-9416b36bae97" />
+
+6. **Terminal cURL do Teste B** (contexto curado), registrando 99 tokens de entrada e 140 de saída.
+
+   <img width="745" height="449" alt="Terminal cURL Teste B - parte 1" src="https://github.com/user-attachments/assets/f5fc94cb-d2a9-40aa-8af6-889778aa67ab" />
+   <img width="907" height="585" alt="Terminal cURL Teste B - parte 2" src="https://github.com/user-attachments/assets/7a19c51e-95d5-43e1-8d14-dd9c97a5c97f" />
+
+7. `04-modo-json.png`: resposta ao comando `MODO_JSON` em JSON puro estrito.
 
 ---
 
 ## 7. Deploy e Execução Local
 
-- **URL Pública do Projeto**: `https://ais-dev-johptaxmyu2vnahec5ndkq-436212701844.us-east1.run.app`
-- **Plataforma Utilizada**: Google Cloud Run / Google AI Studio Build
-- **Colaborador Adicionado no GitHub**: `@pedrosatin`
+- **URL pública do projeto**: `https://ais-dev-johptaxmyu2vnahec5ndkq-436212701844.us-east1.run.app`
+- **Plataforma utilizada**: Google Cloud Run / Google AI Studio Build
+- **Colaborador adicionado no GitHub**: `@pedrosatin`
 
-### Instruções para Execução Local:
+### Instruções para execução local
+
 1. Clone o repositório do projeto:
+
    ```bash
    git clone <URL_DO_REPOSITORIO>
    cd montador-de-mala
    ```
+
 2. Instale as dependências:
+
    ```bash
    npm install
    ```
+
 3. Configure a variável de ambiente criando um arquivo `.env` (baseado no `.env.example`):
+
    ```env
    GEMINI_API_KEY=sua_chave_aqui
    ```
+
 4. Inicie o servidor local:
+
    ```bash
    npm run dev
    # ou
    node server.ts
    ```
+
 5. Acesse a aplicação no navegador em `http://localhost:3000`.
 
 ---
 
 ## 8. Integrantes
 
-- **Nome Completo**: Daniely Mikami — **RA**: 23175979-2
-- **Nome Completo**: Mariana Barnabé da Silva — **RA**: 23123538-2
-- **Nome Completo**: Nathacha Alexsandra Cardoso Calsavara — **RA**: 23141737-2
+| Nome completo | RA |
+|---|---|
+| Daniely Mikami | 23175979-2 |
+| Mariana Barnabé da Silva | 23123538-2 |
+| Nathacha Alexsandra Cardoso Calsavara | 23141737-2 |
