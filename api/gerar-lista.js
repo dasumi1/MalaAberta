@@ -3,20 +3,11 @@ import { SYSTEM_PROMPT, FEW_SHOT } from './prompts.js';
 
 const CANDIDATE_MODELS = ['gemini-3.6-flash', 'gemini-3.7-flash'];
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-  httpOptions: {
-    headers: {
-      'User-Agent': 'aistudio-build',
-    },
-  },
-});
-
 async function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function chamarGeminiComFallback(contents, schemaConfig) {
+async function chamarGeminiComFallback(ai, contents, schemaConfig) {
   let lastError = null;
 
   for (const modelo of CANDIDATE_MODELS) {
@@ -57,6 +48,20 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ erro: 'Use POST.' });
   }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ erro: 'Chave GEMINI_API_KEY não configurada nas variáveis de ambiente da Vercel.' });
+  }
+
+  const ai = new GoogleGenAI({
+    apiKey: apiKey,
+    httpOptions: {
+      headers: {
+        'User-Agent': 'aistudio-build',
+      },
+    },
+  });
 
   const { destino, dias, motivo, clima } = req.body || {};
   if (!destino || !dias || !motivo || !clima) {
@@ -113,7 +118,7 @@ export default async function handler(req, res) {
       required: ['resumo', 'categorias', 'lembretes']
     };
 
-    const { response, modeloUsado } = await chamarGeminiComFallback(contents, responseSchema);
+    const { response, modeloUsado } = await chamarGeminiComFallback(ai, contents, responseSchema);
 
     const texto = response.text || '{}';
     const lista = JSON.parse(texto);

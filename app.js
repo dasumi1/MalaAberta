@@ -1,4 +1,5 @@
 import './style.css';
+import { SYSTEM_PROMPT, FEW_SHOT } from './api/prompts.js';
 
 // Precos oficiais do Gemini 3.7 Flash, em dolares por milhao de tokens.
 const PRECO_ENTRADA = 0.10;
@@ -12,44 +13,134 @@ const aviso = document.getElementById('aviso');
 botao.addEventListener('click', montarMala);
 
 async function montarMala() {
- const dadosDaViagem = {
- destino: document.getElementById('destino').value.trim(),
- dias: document.getElementById('dias').value,
- motivo: document.getElementById('motivo').value,
- clima: document.getElementById('clima').value
- };
+  const dadosDaViagem = {
+    destino: document.getElementById('destino').value.trim(),
+    dias: document.getElementById('dias').value,
+    motivo: document.getElementById('motivo').value,
+    clima: document.getElementById('clima').value
+  };
 
- if (!dadosDaViagem.destino) {
- aviso.textContent = 'Informe o destino para continuar.';
- return;
- }
+  if (!dadosDaViagem.destino) {
+    aviso.textContent = 'Informe o destino para continuar.';
+    return;
+  }
 
- botao.disabled = true;
- botao.textContent = 'Montando...';
- aviso.textContent = '';
+  botao.disabled = true;
+  botao.textContent = 'Montando...';
+  aviso.textContent = '';
 
- try {
- const resposta = await fetch('/api/gerar-lista', {
- method: 'POST',
- headers: { 'content-type': 'application/json' },
- body: JSON.stringify(dadosDaViagem)
- });
+  try {
+    let dados = null;
 
- const dados = await resposta.json();
+    // 1. Tenta chamar o backend (/api/gerar-lista)
+    try {
+      const resposta = await fetch('/api/gerar-lista', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(dadosDaViagem)
+      });
 
- if (!resposta.ok) {
- aviso.textContent = dados.erro;
- return;
- }
+      if (resposta.ok) {
+        dados = await resposta.json();
+      } else if (resposta.status !== 404) {
+        const errJson = await resposta.json().catch(() => ({}));
+        aviso.textContent = errJson.erro || 'Erro ao processar a lista.';
+        return;
+      }
+    } catch (e) {
+      // Backend inacessivel, tentara fallback cliente
+    }
 
- mostrarLista(dados.lista, dadosDaViagem);
- mostrarMedicao(dados.uso, dados.modelo);
- } catch (erro) {
- aviso.textContent = 'Sem resposta do servidor. Verifique a conexao e tente de novo.';
- } finally {
- botao.disabled = false;
- botao.textContent = 'Montar a mala';
- }
+    // 2. Se o backend retornou 404 (ex: GitHub Pages estatico), executa via chamada direta ao Gemini
+    if (!dados) {
+      dados = await gerarListaDireta(dadosDaViagem);
+    }
+
+    if (!dados || !dados.lista) {
+      aviso.textContent = 'Não foi possível gerar a lista. Verifique a conexão.';
+      return;
+    }
+
+    mostrarLista(dados.lista, dadosDaViagem);
+    mostrarMedicao(dados.uso, dados.modelo);
+  } catch (erro) {
+    aviso.textContent = erro.message || 'Sem resposta do servidor. Verifique a conexao e tente de novo.';
+  } finally {
+    botao.disabled = false;
+    botao.textContent = 'Montar a mala';
+  }
+}
+
+async function gerarListaDireta(viagem) {
+  // Chave do ambiente Vite ou do localStorage para deploy estatico no GitHub Pages
+  let apiKey = import.meta.env?.VITE_GEMINI_API_KEY || localStorage.getItem('gemini_api_key');
+
+  if (!apiKey) {
+    apiKey = window.prompt('Para usar a versão estática no GitHub Pages, informe sua Chave de API do Google Gemini (ela ficará salva apenas no seu navegador):');
+    if (apiKey) {
+      apiKey = apiKey.trim();
+      localStorage.setItem('gemini_api_key', apiKey);
+    } else {
+      throw new Error('Chave de API do Gemini é necessária para gerar a mala no GitHub Pages.');
+    }
+  }
+
+  const promptUsuario = `Destino: ${viagem.destino}. Dias: ${viagem.dias}. Motivo: ${viagem.motivo}. Clima: ${viagem.clima}.`;
+
+  const contents = [
+    ...FEW_SHOT.map(ex => ({
+      role: ex.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: ex.content }]
+    })),
+    {
+      role: 'user',
+      parts: [{ text: promptUsuario }]
+    }
+  ];
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      system_instruction: {
+        parts: [{ text: SYSTEM_PROMPT }]
+      },
+      contents,
+      generationConfig: {
+        response_mime_type: 'application/json',
+        temperature: 0.2
+      }
+    })
+  });
+
+  if (!res.ok) {
+    const erroData = await res.json().catch(() => ({}));
+    if (res.status === 400 || res.status === 403) {
+      localStorage.removeItem('gemini_api_key');
+      throw new Error('Chave de API inválida ou sem permissão. Tente novamente.');
+    }
+    throw new Error(erroData.error?.message || 'Erro ao conectar à API do Gemini.');
+  }
+
+  const resData = await res.json();
+  const rawText = resData.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+  const lista = JSON.parse(rawText);
+
+  const usage = resData.usageMetadata || {};
+  const tokensEntrada = Number(usage.promptTokenCount || 0);
+  const tokensSaida = Number(usage.candidatesTokenCount || 0);
+
+  return {
+    lista,
+    modelo: 'gemini-2.5-flash',
+    uso: {
+      tokens_entrada: tokensEntrada,
+      tokens_saida: tokensSaida,
+      tokens_total: tokensEntrada + tokensSaida
+    }
+  };
 }
 
 function mostrarLista(lista, viagem) {
