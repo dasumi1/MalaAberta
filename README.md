@@ -372,25 +372,22 @@ As evidências fotográficas e registros de terminal das chamadas realizadas:
 
 7. **Terminal cURL do Exemplo 1 (Curitiba - 3 dias, Trabalho, Frio)**:
    - Registro comprovado: **95 tokens de entrada** e **757 tokens de saída** (`modelVersion: gemini-3.6-flash`, responseId: `5myHaueqD8mFz7IP2PXCwA8`).
-   - ![Terminal cURL Exemplo 1 - Curitiba](Captura%20de%20tela%202026-08-20%20180943.png)
+   - <img width="745" height="449" alt="Captura de tela 2026-08-20 180943" src="https://github.com/user-attachments/assets/21407561-4492-41c1-9676-49ee48be9693" />
 
 8. **Terminal cURL do Exemplo 2 (Salvador - 7 dias, Lazer, Calor)**:
    - Registro comprovado: **94 tokens de entrada** e **799 tokens de saída** (`modelVersion: gemini-3.6-flash`, responseId: `JG2HaoOeG9aEz7IPq5jrkQY`).
-   - ![Terminal cURL Exemplo 2 - Salvador](Captura%20de%20tela%202026-08-20%20181110.png)
+   - <img width="745" height="449" alt="Captura de tela 2026-08-20 181110" src="https://github.com/user-attachments/assets/c54c2cdd-aff5-41e8-b77a-55818f7b003b" />
 
 9. **Terminal cURL do Exemplo 3 (Bariloche - 10 dias, Ecoturismo, Frio intenso)**:
    - Registro comprovado: **106 tokens de entrada** e **947 tokens de saída** (`modelVersion: gemini-3.6-flash`, responseId: `em2Hau6JEZ3Uz7IPlZvO6Ao`).
-   - ![Terminal cURL Exemplo 3 - Bariloche](Captura%20de%20tela%202026-08-20%20181200.png)
+   - <img width="745" height="449" alt="Captura de tela 2026-08-20 181200" src="https://github.com/user-attachments/assets/b3f7d1e3-e2ca-4ebc-93e1-32a27d8f9de4" />
 
 ---
 
 ## 7. Deploy
 
 - **URL pública do projeto (Vercel)**: [https://mala-aberta.vercel.app/](https://mala-aberta.vercel.app/)
-- **Ambiente de visualização**: [https://ais-dev-johptaxmyu2vnahec5ndkq-436212701844.us-east1.run.app](https://ais-dev-johptaxmyu2vnahec5ndkq-436212701844.us-east1.run.app)
-- **Plataformas utilizadas**: Vercel / Google AI Studio Build / Google Cloud Run
-- **Colaborador adicionado no GitHub**: `@pedrosatin`
-
+  
 ---
 
 ## 8. Integrantes
