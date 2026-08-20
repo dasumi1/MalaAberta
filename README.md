@@ -24,7 +24,6 @@ Aplicação web e protótipo prático de **Engenharia de Prompt e Contexto na Pr
 | **O que o projeto faz** | Gera listas de bagagem personalizadas, inteligentes e enxutas para viajantes, considerando quatro variáveis essenciais: destino, duração em dias, motivo da viagem (lazer, trabalho, estudos, aventura) e condições climáticas previstas (frio, calor, chuva, ameno). |
 | **Problema resolvido** | Elimina o estresse de esquecer itens essenciais e previne o excesso de bagagem (evitando taxas de despacho e sobrepeso), adequando quantidades de peças ao número exato de dias e sugerindo itens indispensáveis de acordo com o contexto climático e funcional do destino. |
 | **Público-alvo** | Viajantes frequentes, turistas a lazer, profissionais em viagens corporativas a trabalho e mochileiros/aventureiros. |
-| **Opção do trabalho escolhida** | Desenvolvimento de Protótipo com Engenharia de Prompt, Contexto Curado e Telemetria de Custos (opção prática com consumo de API de LLM). |
 
 ---
 
