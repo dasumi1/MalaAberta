@@ -54,6 +54,7 @@ function apiPlugin(): Plugin {
 
 export default defineConfig(() => {
   return {
+    base: '/MalaAberta/',
     plugins: [apiPlugin()],
     resolve: {
       alias: {
